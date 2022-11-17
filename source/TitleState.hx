@@ -643,14 +643,12 @@ class TitleState extends MusicBeatState
 					#if PSYCH_WATERMARKS
 					createCoolText(['RestBeat Engine by'], 15);
 					#else
-					createCoolText(['boris2010z']);
 					#end
 				// credTextShit.visible = true;
 				case 4:
 					#if PSYCH_WATERMARKS
-					addMoreText('and boris2010z', 15);
+					addMoreText('boris2010z', 40);
 					#else
-					addMoreText('present');
 					#end
 				// credTextShit.text += '\npresent...';
 				// credTextShit.addText();
