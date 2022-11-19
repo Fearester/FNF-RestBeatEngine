@@ -63,6 +63,9 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
+		var option:Option = new Option('Colored Timebar', "If checked, TimeBar the filled bar its changed color to dad health icon", 'colorTimebar', 'bool', false);
+		addOption(option);
+
 		var option:Option = new Option('Ghost Tapping',
 			"If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.",
 			'ghostTapping',

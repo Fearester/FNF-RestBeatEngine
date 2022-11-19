@@ -89,9 +89,11 @@ class ChartingState extends MusicBeatState
 		['Camera Follow Pos', "Value 1: X\nValue 2: Y\n\nThe camera won't change the follow point\nafter using this, for getting it back\nto normal, leave both values blank."],
 		['Alt Idle Animation', "Sets a specified suffix after the idle animation name.\nYou can use this to trigger 'idle-alt' if you set\nValue 2 to -alt\n\nValue 1: Character to set (Dad, BF or GF)\nValue 2: New suffix (Leave it blank to disable)"],
 		['Screen Shake', "Value 1: Camera shake\nValue 2: HUD shake\n\nEvery value works as the following example: \"1, 0.05\".\nThe first number (1) is the duration.\nThe second number (0.05) is the intensity."],
-		['Change Character', "Value 1: Character to change (Dad, BF, GF)\nValue 2: New character's name"],
+		['Change Character', "Value 1: Character to change (Dad(1), BF(0), GF(2))\nValue 2: New character's name"],
 		['Change Scroll Speed', "Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."],
-		['Set Property', "Value 1: Variable name\nValue 2: New value"]
+		['Set Property', "Value 1: Variable name\nValue 2: New value"],
+		['Flash Camera', "Value 1: Speed"],
+		['Background Change', "Value 1: New image\nValue 2: Old image"]
 	];
 
 	var _file:FileReference;
@@ -348,6 +350,8 @@ class ChartingState extends MusicBeatState
 		\nHold Shift to move 4x faster
 		\nHold Control and click on an arrow to select it
 		\nZ/X - Zoom in/out
+		\nN keyboard - Remove Notes
+		\nNumbers(1-8) - Add Notes
 		\n
 		\nEsc - Test your chart inside Chart Editor
 		\nEnter - Play your chart
@@ -357,8 +361,8 @@ class ChartingState extends MusicBeatState
 		var tipTextArray:Array<String> = text.split('\n');
 		for (i in 0...tipTextArray.length) {
 			var tipText:FlxText = new FlxText(UI_box.x, UI_box.y + UI_box.height + 8, 0, tipTextArray[i], 16);
-			tipText.y += i * 12;
-			tipText.setFormat(Paths.font("vcr.ttf"), 14, FlxColor.WHITE, LEFT/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
+			tipText.y += i * 9;
+			tipText.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, LEFT/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
 			//tipText.borderSize = 2;
 			tipText.scrollFactor.set();
 			add(tipText);
@@ -1542,6 +1546,44 @@ class ChartingState extends MusicBeatState
 		}
 		Conductor.songPosition = FlxG.sound.music.time;
 		_song.song = UI_songTitle.text;
+
+		var left = FlxG.keys.justPressed.ONE;
+		var down = FlxG.keys.justPressed.TWO;
+		var up = FlxG.keys.justPressed.THREE;
+		var right = FlxG.keys.justPressed.FOUR;
+		var leftO = FlxG.keys.justPressed.FIVE;
+		var downO = FlxG.keys.justPressed.SIX;
+		var upO = FlxG.keys.justPressed.SEVEN;
+		var rightO = FlxG.keys.justPressed.EIGHT;
+		var rightq = FlxG.keys.justPressed.N;
+		var leftq = FlxG.keys.justPressed.N;
+		var upq = FlxG.keys.justPressed.N;
+		var downq = FlxG.keys.justPressed.N;
+		var righte = FlxG.keys.justPressed.N;
+		var lefte = FlxG.keys.justPressed.N;
+		var upe = FlxG.keys.justPressed.N;
+		var downe = FlxG.keys.justPressed.N;
+
+		var pressArray = [left, down, up, right, leftO, downO, upO, rightO];
+		var pressArray1 = [leftq, downq, upq, rightq, lefte, downe, upe, righte];
+		var delete = false;
+		curRenderedNotes.forEach(function(note:Note)
+		{
+			if (strumLine.overlaps(note) && pressArray1[Math.floor(Math.abs(note.noteData))])
+			{
+				deleteNote(note);
+				delete = true;
+				trace('deelte note');
+			}
+		});
+		for (p in 0...pressArray.length)
+		{
+			var i = pressArray[p];
+			if (i && !delete)
+			{
+				addNote(Conductor.songPosition,p);
+			}
+		}
 
 		strumLineUpdateY();
 		for (i in 0...8){

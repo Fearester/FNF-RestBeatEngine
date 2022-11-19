@@ -193,6 +193,7 @@ class PlayState extends MusicBeatState
 	public var goods:Int = 0;
 	public var bads:Int = 0;
 	public var shits:Int = 0;
+	public var perfects:Int = 0;
 
 	private var generatedMusic:Bool = false;
 	public var endingSong:Bool = false;
@@ -353,7 +354,13 @@ class PlayState extends MusicBeatState
 		];
 
 		//Ratings
-		ratingsData.push(new Rating('sick')); //default rating
+		ratingsData.push(new Rating('perfect'));
+
+		var rating:Rating = new Rating('sick'); //default rating
+		rating.ratingMod = 0;
+		rating.score = 350;
+		rating.noteSplash = false;
+		ratingsData.push(rating);
 
 		var rating:Rating = new Rating('good');
 		rating.ratingMod = 0.7;
@@ -1056,7 +1063,14 @@ class PlayState extends MusicBeatState
 		timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
 			'songPercent', 0, 1);
 		timeBar.scrollFactor.set();
-		timeBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
+		if(ClientPrefs.colorTimebar) 
+		{
+			timeBar.createFilledBar(FlxColor.GRAY, FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]));
+		}
+		else
+		{
+			timeBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
+		}
 		timeBar.numDivisions = 800; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
 		timeBar.alpha = 0;
 		timeBar.visible = showTime;
@@ -3066,11 +3080,15 @@ class PlayState extends MusicBeatState
 
 		if (healthBar.percent < 20)
 			iconP1.animation.curAnim.curFrame = 1;
+		else if (healthBar.percent > 80)
+			iconP1.animation.curAnim.curFrame = 2;
 		else
 			iconP1.animation.curAnim.curFrame = 0;
 
 		if (healthBar.percent > 80)
 			iconP2.animation.curAnim.curFrame = 1;
+		else if (healthBar.percent < 20)
+			iconP2.animation.curAnim.curFrame = 2;
 		else
 			iconP2.animation.curAnim.curFrame = 0;
 
@@ -3428,6 +3446,14 @@ class PlayState extends MusicBeatState
 
 	public function triggerEventNote(eventName:String, value1:String, value2:String) {
 		switch(eventName) {
+			case 'Flash Camera':
+				var value:Float = Std.parseFloat(value1);
+				
+			case 'Background Change':
+				var bg1:BGSprite = new BGSprite(value1, 0, 0, 0.9, 0.9);
+				add(bg1);
+				var bg2:BGSprite = new BGSprite(value2, 0, 0, 0.9, 0.9);
+				remove(bg2);
 			case 'Dadbattle Spotlight':
 				var val:Null<Int> = Std.parseInt(value1);
 				if(val == null) val = 0;
@@ -4100,6 +4126,7 @@ class PlayState extends MusicBeatState
 		Paths.image(pixelShitPart1 + "bad" + pixelShitPart2);
 		Paths.image(pixelShitPart1 + "shit" + pixelShitPart2);
 		Paths.image(pixelShitPart1 + "combo" + pixelShitPart2);
+		Paths.image(pixelShitPart1 + "perfect" + pixelShitPart2);
 		
 		for (i in 0...10) {
 			Paths.image(pixelShitPart1 + 'num' + i + pixelShitPart2);
@@ -5226,6 +5253,7 @@ class PlayState extends MusicBeatState
 
 			// Rating FC
 			ratingFC = "";
+			if (perfects > 0) ratingFC = "PFC";
 			if (sicks > 0) ratingFC = "SFC";
 			if (goods > 0) ratingFC = "GFC";
 			if (bads > 0 || shits > 0) ratingFC = "FC";
