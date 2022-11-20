@@ -66,6 +66,17 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		var option:Option = new Option('Colored Timebar', "If checked, TimeBar the filled bar its changed color to dad health icon", 'colorTimebar', 'bool', false);
 		addOption(option);
 
+		var option:Option = new Option('Note Skin',
+			"What note skin do you prefer for playing?",
+			'noteSkinSettings',
+			'string',
+			'Classic',
+			['Classic', 'Circle']);
+		addOption(option);
+
+		var option:Option = new Option('Overlay HealthBar', "If checked, in healthbar add a overlay", 'overlayHealthbar', 'bool', false);
+		addOption(option);
+
 		var option:Option = new Option('Ghost Tapping',
 			"If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.",
 			'ghostTapping',
@@ -94,7 +105,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.onChange = onChangeHitsoundVolume;
 
 		var option:Option = new Option('Rating Offset',
-			'Changes how late/early you have to hit for a "Sick!"\nHigher values mean you have to hit later.',
+			'Changes how late/early you have to hit for a "Master!!"\nHigher values mean you have to hit later.',
 			'ratingOffset',
 			'int',
 			0);
@@ -102,6 +113,17 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.scrollSpeed = 20;
 		option.minValue = -30;
 		option.maxValue = 30;
+		addOption(option);
+
+		var option:Option = new Option('Master!! Hit Window',
+			'Changes the amount of time you have\nfor hitting a "Master!!" in milliseconds.',
+			'masterWindow',
+			'int',
+			10);
+		option.displayFormat = '%vms';
+		option.scrollSpeed = 15;
+		option.minValue = 1;
+		option.maxValue = 10;
 		addOption(option);
 
 		var option:Option = new Option('Sick! Hit Window',
