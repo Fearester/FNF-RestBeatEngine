@@ -30,6 +30,7 @@ class ClientPrefs {
 	public static var scoreZoom:Bool = true;
 	public static var noReset:Bool = false;
 	public static var healthBarAlpha:Float = 1;
+	public static var healthbops:Bool = false;
 	public static var controllerMode:Bool = false;
 	public static var hitsoundVolume:Float = 0;
 	public static var pauseMusic:String = 'Tea Time';
@@ -119,6 +120,7 @@ class ClientPrefs {
 		FlxG.save.data.colorTimebar = colorTimebar;
 		FlxG.save.data.timeBarType = timeBarType;
 		FlxG.save.data.overlayHealthbar = overlayHealthbar;
+		FlxG.save.data.healthbops = healthbops;
 		FlxG.save.data.scoreZoom = scoreZoom;
 		FlxG.save.data.noReset = noReset;
 		FlxG.save.data.healthBarAlpha = healthBarAlpha;
@@ -224,6 +226,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.overlayHealthbar != null) {
 			overlayHealthbar = FlxG.save.data.overlayHealthbar;
+		}
+		if(FlxG.save.data.healthbops != null) {
+			healthbops = FlxG.save.data.healthbops;
 		}
 		if(FlxG.save.data.scoreZoom != null) {
 			scoreZoom = FlxG.save.data.scoreZoom;
